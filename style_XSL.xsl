@@ -260,12 +260,12 @@
                 <xsl:for-each select="tei:zone">
                     <xsl:element name="area">
                         <xsl:attribute name="id">
-                            <xsl:value-of select="@xml:id" />
+                            <xsl:value-of select="@xml:id"/>
                         </xsl:attribute>
                         <xsl:attribute name="class">area</xsl:attribute>
                         <xsl:attribute name="href">javascript:mostra(<xsl:value-of select="@xml:id"/>);</xsl:attribute>
                         <xsl:attribute name="coords">
-                            <xsl:value-of select="@ulx" />,<xsl:value-of select="@uly" />,<xsl:value-of select="@lrx" />,<xsl:value-of select="@lry" />
+                            <xsl:value-of select="@ulx" />,<xsl:value-of select="@uly" />,<xsl:value-of select="@lrx" />,<xsl:value-of select="@lry"/>
                         </xsl:attribute>
                         <xsl:attribute name="shape">rect</xsl:attribute>
                         <xsl:attribute name="onmouseout">nascondi(<xsl:value-of select="@xml:id"/>);</xsl:attribute>
@@ -284,7 +284,7 @@
             <xsl:element name="b">
             <xsl:text>FRONTE: </xsl:text> 
             </xsl:element>   
-            <xsl:value-of select="tei:figDesc"/>
+            <xsl:value-of select="tei:figDesc[1]"/>
         </xsl:element>
     </xsl:template>
 
@@ -341,7 +341,8 @@
         </xsl:element>        
     </xsl:template>
     
-    <xsl:template match="tei:TEI//tei:addrLine ">
+    <!-- indirizzo destinatario -->
+    <xsl:template match="tei:addrLine ">
         <xsl:element name="div">
             <xsl:attribute name="id">
                 <xsl:value-of select="translate(@facs, '#', '')"/>
@@ -350,7 +351,7 @@
         </xsl:element>
     </xsl:template> 
     
-
+    <!-- data e firma -->
     <xsl:template match="tei:dateline | tei:signed">
         <xsl:element name="div">
             <xsl:attribute name="id">
@@ -361,6 +362,7 @@
         </xsl:element>
     </xsl:template>
 
+    <!-- contenuto cartolina -->
     <xsl:template match="tei:div[@type = 'retro']/tei:div[@type = 'message']">
         <xsl:element name="div">
             <xsl:attribute name="class">testo_cartolina</xsl:attribute>
@@ -383,18 +385,8 @@
     </xsl:template>
 
     <!-- TUTTI I BLOCCHI RESI INVISIBILI -->
-    <!-- info cartolina successiva -->
-    <xsl:template match="tei:profileDesc">
-        <xsl:element name="p">
-            <xsl:attribute name="class">invisibile</xsl:attribute>
-            <xsl:for-each select="tei:correspDesc/tei:ref">
-                <xsl:apply-templates select="."/>
-            </xsl:for-each>
-        </xsl:element>
-    </xsl:template>
-
-    <!-- info su francobollo e timbro/espansione abbreviazioni/note -->
-    <xsl:template match="tei:note[@n='1'] | tei:expan | tei:am | tei:encodingDesc[1] | tei:stamp[@n='2']">
+    <!-- info info cartolina successiva/note/francobollo e timbro/espansione abbreviazioni -->
+    <xsl:template match="//tei:profileDesc | tei:note[@n='1'] | tei:expan | tei:am | tei:encodingDesc | tei:stamp[@n='2']">
         <xsl:element name="p">
             <xsl:attribute name="class">invisibile</xsl:attribute>
              <xsl:apply-templates/>
@@ -402,5 +394,3 @@
     </xsl:template>
    
 </xsl:stylesheet>        
-
-    
